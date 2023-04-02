@@ -1,0 +1,19 @@
+[Unit]
+Description=Autologin daemon for sharif-wifi
+ConditionUser=!root
+
+[Service]
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+RestrictNamespaces=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+Type=simple
+ExecStart=/usr/local/bin/sharif-wifi-autologin
+Restart=on-failure
+RestartSecs=5s
+Slice=session.slice
+
+[Install]
+WantedBy=default.target
