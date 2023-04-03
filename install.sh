@@ -1,15 +1,19 @@
 #!/usr/bin/bash
 
 cargo build --release
-cp target/release/sharif-wifi-autologin /usr/local/bin/
 
-mkdir /etc/sharif-wifi
-mkdir /etc/systemd/user
+sudo cp target/release/sharif-wifi-autologin /usr/local/bin/
 
-cp config.json /etc/sharif-wifi/
-cp sharif-autologin.service /etc/systemd/user
+sudo mkdir -p /etc/sharif-wifi
+sudo mkdir -p /etc/systemd/user
 
-systemctl daemon-reload
+if ! [[ -e /etc/sharif-wifi/config.json ]]; then
+	sudo cp config.json /etc/sharif-wifi/
+fi
+
+sudo cp sharif-autologin.service /etc/systemd/user
+
+sudo systemctl daemon-reload
 
 echo "Don't forget to put your credentials in /etc/sharif-wifi/config.json"
 echo "run 'systemctl --user enable --now sharif-autologin.service' to enable the service on startup"

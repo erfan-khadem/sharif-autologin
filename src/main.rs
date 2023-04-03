@@ -59,5 +59,10 @@ async fn get_creds(path: Option<&std::path::Path>) -> io::Result<SharifLogin> {
 #[tokio::main]
 async fn main() {
     let creds = get_creds(None).await.unwrap();
+    let client = reqwest::Client::builder().build().unwrap();
+    let _ = client.post("https://net2.sharif.edu/login")
+        .form(&creds)
+        .send()
+        .await;
     run(&creds).await.unwrap();
 }
