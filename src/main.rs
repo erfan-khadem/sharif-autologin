@@ -47,7 +47,7 @@ async fn run(creds: &SharifLogin) -> ashpd::Result<()> {
 }
 
 async fn get_creds(path: Option<&std::path::Path>) -> io::Result<SharifLogin> {
-    let path = path.unwrap_or(Path::new("/etc/sharif-creds/config.json"));
+    let path = path.unwrap_or(Path::new("/etc/sharif-wifi/config.json"));
 
     let result = tokio::fs::read(path).await?;
     let login: SharifLogin = serde_json::from_slice(&result)?;
