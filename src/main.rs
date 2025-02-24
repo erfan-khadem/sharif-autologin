@@ -26,9 +26,9 @@ async fn run(creds: &SharifLogin) -> ashpd::Result<()> {
     let client = reqwest::Client::builder().build().unwrap();
     loop { 
         NetworkMonitor::receive_changed(&proxy).await?;
-        if NetworkMonitor::can_reach(&proxy, "net2.sharif.edu", 443).await? {
+        if NetworkMonitor::can_reach(&proxy, "rasgw01.sharif.ir", 443).await? {
             sleep(Duration::from_millis(500)).await;
-            let res = client.post("https://net2.sharif.edu/login")
+            let res = client.post("https://rasgw01.sharif.ir/login")
                 .form(&creds)
                 .send()
                 .await;
@@ -59,7 +59,7 @@ async fn get_creds(path: Option<&std::path::Path>) -> io::Result<SharifLogin> {
 async fn main() {
     let creds = get_creds(None).await.unwrap();
     let client = reqwest::Client::builder().build().unwrap();
-    let _ = client.post("https://net2.sharif.edu/login")
+    let _ = client.post("https://rasgw01.sharif.ir/login")
         .form(&creds)
         .send()
         .await;
@@ -68,7 +68,7 @@ async fn main() {
         let creds = get_creds(None).await.unwrap();
         loop {
             thread::sleep(Duration::from_secs(3600 * 3)); // Run every 3 hours
-            let _ = client.post("https://net2.sharif.edu/login")
+            let _ = client.post("https://rasgw01.sharif.ir/login")
                 .form(&creds)
                 .send()
                 .await;
